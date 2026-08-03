@@ -4,27 +4,44 @@
 
 The hero looks for a photograph at `assets/hero-runway.jpg`.
 
-Save the aerial runway shot here with exactly that filename and it renders
+Save the sunset landing shot here with exactly that filename and it renders
 automatically — no code change needed. Nothing else in the project references
 this folder.
 
-**Until the file exists**, the browser logs one harmless 404 for it and the hero
-falls back to the CSS runway (asphalt gradient, amber slab seams, dashed
-centerline, warm top-right sun wash), which is designed to stand on its own.
+### What happens when you add it
 
-If you decide against a photo entirely, delete the `background-image` line in the
-`.hero-photo` rule in `../styles.css` and the 404 goes away.
+`script.js` probes for the file on load and puts either `has-hero-photo` or
+`no-hero-photo` on `<html>`. That switch matters, because the hero also contains a
+*drawn* CSS runway (amber dashed centerline, angled slab seams) so the page works
+with no image at all. Layered over a photo that already shows a runway, those
+markings would double up — so when the photo loads they hide themselves, the
+synthetic sun glow drops to 35%, and the scrim takes over the legibility work.
 
-### What works well here
+**Until the file exists**, the browser logs one harmless 404 and the drawn runway
+carries the hero on its own.
 
-- **Landscape, wide.** It is cropped to `cover` at `center 38%`, so the subject
-  should sit slightly above the middle.
-- **At least 2000px wide** for sharpness on large displays.
-- **Dark and low-contrast in the upper left**, where the headline sits. The scrim
-  layer darkens that side, but a busy photo there still costs legibility.
-- **Compress it.** Aim under ~400KB; this is a decorative background and it is the
-  only binary asset on the page.
+### Tuning for this photo
 
-The photo renders at `opacity: .58` beneath a navy scrim, so it reads as texture
-rather than as a picture. If yours comes out too dim or too loud, adjust that
-opacity in the `.hero-photo` rule.
+The hero is currently set up for the sunset approach shot:
+
+- `background-position: center 44%` — biased above centre so the aircraft and the
+  horizon survive the crop on a wide, short hero.
+- `opacity: .72` under a navy scrim, so it reads as a photograph rather than a
+  flat wash.
+- The scrim is heavier on the left (95% → 46% across) to protect the headline
+  against the bright sky, while leaving the right side open enough to still read
+  as a sunset.
+
+Both live in the `.hero-photo` and `.has-hero-photo .hero-scrim` rules in
+`../styles.css`. If the headline looks strained against the sky, raise the first
+stop of the 95deg gradient; if the photo feels washed out, raise the opacity.
+
+### File requirements
+
+- **Landscape, at least 2560px wide** — ideally 3840px if you want it crisp on 4K
+  displays. It is the only binary asset on the site.
+- **Compress it.** A full-resolution JPEG can easily hit several MB, which is a
+  poor trade for a background. Aim for under ~500KB at quality ~80; consider also
+  saving a `.webp` if you want to get stricter about it.
+- **Check the licence** before deploying. If this came from a stock library, make
+  sure the licence covers commercial use on a public site.

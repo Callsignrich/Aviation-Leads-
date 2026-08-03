@@ -394,7 +394,37 @@
   }
 
   /* ==================================================================
-     7. Footer year
+     7. Hero photo detection
+     The hero ships with a drawn CSS runway so it works with no image at
+     all. When a real photograph is present the drawn markings would
+     compete with the ones in the photo, so flag which case we are in and
+     let the stylesheet resolve it.
+     ================================================================== */
+  function initHeroPhoto() {
+    var el = document.querySelector('.hero-photo');
+    if (!el) return;
+
+    /* Read the URL back out of the stylesheet so the path lives in exactly
+       one place. If someone removes the background-image to drop the photo
+       entirely, this quietly does nothing. */
+    var bg = window.getComputedStyle(el).backgroundImage;
+    var match = /url\((['"]?)(.*?)\1\)/.exec(bg);
+    if (!match || !match[2]) return;
+
+    var probe = new Image();
+    probe.onload = function () {
+      document.documentElement.classList.add('has-hero-photo');
+    };
+    probe.onerror = function () {
+      /* Expected until assets/hero-runway.jpg exists — the drawn runway
+         stays on screen and the hero is unaffected. */
+      document.documentElement.classList.add('no-hero-photo');
+    };
+    probe.src = match[2];
+  }
+
+  /* ==================================================================
+     8. Footer year
      ================================================================== */
   function initYear() {
     var el = document.getElementById('year');
@@ -411,6 +441,7 @@
     initHeaderScroll();
     initFaq();
     initForm();
+    initHeroPhoto();
     initYear();
   }
 

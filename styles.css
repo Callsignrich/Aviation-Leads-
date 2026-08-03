@@ -330,10 +330,22 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   inset: 0;
   background-image: url("assets/hero-runway.jpg");
   background-size: cover;
-  background-position: center 38%;
-  opacity: .58;
-  filter: saturate(.9) contrast(1.05);
+  /* Biased above centre so the aircraft and horizon stay in frame when a wide,
+     short hero crops the photo top and bottom. */
+  background-position: center 44%;
+  opacity: .72;
+  filter: saturate(1.02) contrast(1.03);
 }
+
+/* When a real photo loads, the drawn runway would fight the one in the
+   photograph, so the painted markings and slab seams step aside and the scrim
+   does the legibility work on its own. Class is set by script.js. */
+.has-hero-photo .hero-runway,
+.has-hero-photo .hero-seams { display: none; }
+
+/* A photographed sunset already supplies the warm light, so the synthetic sun
+   only needs to bloom gently rather than carry the whole hero. */
+.has-hero-photo .hero-sun { opacity: .35; }
 
 /* Painted centerline: amber dashes running down the right of the copy. */
 .hero-runway {
@@ -393,6 +405,18 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
                     rgba(7, 19, 36, .42) 72%, rgba(7, 19, 36, .58) 100%),
     linear-gradient(180deg, rgba(7, 19, 36, .55) 0%, transparent 26%,
                     transparent 72%, rgba(7, 19, 36, .8) 100%);
+}
+
+/* A sunset frame is far brighter than the asphalt fallback, so the copy side
+   needs a heavier, further-reaching shade — while the right stays open enough
+   to read as a sunset rather than a navy wash. The bottom band also has to
+   carry the hero into the light form section below it. */
+.has-hero-photo .hero-scrim {
+  background:
+    linear-gradient(95deg, rgba(6, 16, 30, .95) 0%, rgba(6, 16, 30, .88) 38%,
+                    rgba(6, 16, 30, .60) 66%, rgba(6, 16, 30, .46) 100%),
+    linear-gradient(180deg, rgba(6, 16, 30, .70) 0%, rgba(6, 16, 30, .18) 30%,
+                    rgba(6, 16, 30, .30) 68%, rgba(7, 19, 36, .88) 100%);
 }
 
 .hero-horizon {
