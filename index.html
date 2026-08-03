@@ -54,9 +54,16 @@
 
   <!-- ============ HERO ============ -->
   <section class="hero" id="top">
+    <!-- Background layers, back to front: asphalt base (on .hero) → optional
+         runway photo → painted runway markings → scrim that keeps the text
+         readable. Drop a file at assets/hero-runway.jpg and .hero-photo takes
+         over; without it the CSS runway below shows through on its own. -->
     <div class="hero-bg" aria-hidden="true">
-      <div class="hero-grid"></div>
-      <div class="hero-glow"></div>
+      <div class="hero-photo"></div>
+      <div class="hero-scrim"></div>
+      <div class="hero-seams"></div>
+      <div class="hero-runway"></div>
+      <div class="hero-sun"></div>
       <div class="hero-horizon"></div>
     </div>
 
@@ -93,6 +100,189 @@
         <li><span class="stat-num">Nationwide</span><span class="stat-label">Provider coverage</span></li>
         <li><span class="stat-num">No cost</span><span class="stat-label">To request a referral</span></li>
       </ul>
+    </div>
+  </section>
+
+  <!-- ============ REQUEST FORM ============ -->
+  <section class="section section-request" id="request">
+    <div class="wrap wrap-narrow">
+      <header class="section-head reveal">
+        <p class="eyebrow eyebrow-dark">Submit your information</p>
+        <h2>Request maintenance support</h2>
+        <p class="section-lede">
+          Tell us about the aircraft and what it needs. We'll review your request and follow up with
+          matched providers. Fields marked with an asterisk are required.
+        </p>
+      </header>
+
+      <div class="form-shell reveal" data-delay="1">
+
+        <div class="form-status" id="formStatus" role="alert" hidden></div>
+
+        <form id="requestForm" class="form" novalidate>
+
+          <fieldset class="fieldset">
+            <legend class="legend">Your contact information</legend>
+
+            <div class="field-row">
+              <div class="field">
+                <label for="name">Full name <span class="req" aria-hidden="true">*</span></label>
+                <input type="text" id="name" name="name" autocomplete="name" required
+                       aria-describedby="name-err" placeholder="Jordan Ellis">
+                <p class="err" id="name-err" hidden></p>
+              </div>
+
+              <div class="field">
+                <label for="email">Email <span class="req" aria-hidden="true">*</span></label>
+                <input type="email" id="email" name="email" autocomplete="email" required
+                       aria-describedby="email-err" placeholder="you@example.com">
+                <p class="err" id="email-err" hidden></p>
+              </div>
+            </div>
+
+            <div class="field-row">
+              <div class="field">
+                <label for="phone">Phone <span class="req" aria-hidden="true">*</span></label>
+                <input type="tel" id="phone" name="phone" autocomplete="tel" required
+                       aria-describedby="phone-err phone-hint" placeholder="(555) 123-4567">
+                <p class="hint" id="phone-hint">Best number for a provider to reach you.</p>
+                <p class="err" id="phone-err" hidden></p>
+              </div>
+
+              <div class="field">
+                <label for="location">Airport or location <span class="req" aria-hidden="true">*</span></label>
+                <input type="text" id="location" name="location" required
+                       aria-describedby="location-err location-hint" placeholder="KTEB, Teterboro NJ">
+                <p class="hint" id="location-hint">Identifier, city, or where the aircraft sits now.</p>
+                <p class="err" id="location-err" hidden></p>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="fieldset">
+            <legend class="legend">Aircraft</legend>
+
+            <div class="field-row">
+              <div class="field">
+                <label for="aircraftType">Aircraft type <span class="req" aria-hidden="true">*</span></label>
+                <select id="aircraftType" name="aircraftType" required aria-describedby="aircraftType-err">
+                  <option value="">Select a category&hellip;</option>
+                  <option>Single-engine piston</option>
+                  <option>Multi-engine piston</option>
+                  <option>Turboprop</option>
+                  <option>Light jet</option>
+                  <option>Midsize or large jet</option>
+                  <option>Rotorcraft / helicopter</option>
+                  <option>Experimental / amateur-built</option>
+                  <option>Light sport</option>
+                  <option>Warbird / vintage</option>
+                  <option>Other</option>
+                </select>
+                <p class="err" id="aircraftType-err" hidden></p>
+              </div>
+
+              <div class="field">
+                <label for="tailNumber">Tail number <span class="opt">(optional)</span></label>
+                <input type="text" id="tailNumber" name="tailNumber" placeholder="N123AB"
+                       autocapitalize="characters" spellcheck="false">
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="makeModel">Make and model <span class="opt">(optional)</span></label>
+              <input type="text" id="makeModel" name="makeModel" placeholder="Beechcraft King Air 350">
+            </div>
+          </fieldset>
+
+          <fieldset class="fieldset">
+            <legend class="legend">What you need</legend>
+
+            <div class="field">
+              <label for="maintenanceNeeded">Maintenance needed <span class="req" aria-hidden="true">*</span></label>
+              <select id="maintenanceNeeded" name="maintenanceNeeded" required aria-describedby="maintenanceNeeded-err">
+                <option value="">Select the type of work&hellip;</option>
+                <option>Annual or scheduled inspection</option>
+                <option>100-hour / progressive inspection</option>
+                <option>Unscheduled troubleshooting / squawk</option>
+                <option>Engine or propeller work</option>
+                <option>Avionics install or repair</option>
+                <option>Airframe, sheet metal, or structures</option>
+                <option>Landing gear</option>
+                <option>Pre-buy inspection</option>
+                <option>Paint or interior</option>
+                <option>Parts sourcing</option>
+                <option>Other / not sure</option>
+              </select>
+              <p class="err" id="maintenanceNeeded-err" hidden></p>
+            </div>
+
+            <fieldset class="field urgency-set">
+              <legend class="urgency-legend">Urgency <span class="req" aria-hidden="true">*</span></legend>
+              <div class="urgency" role="radiogroup" aria-describedby="urgency-err">
+                <label class="urgency-opt">
+                  <input type="radio" name="urgency" value="AOG — aircraft on ground" required>
+                  <span class="urgency-box">
+                    <span class="urgency-title">AOG</span>
+                    <span class="urgency-desc">Grounded now</span>
+                  </span>
+                </label>
+                <label class="urgency-opt">
+                  <input type="radio" name="urgency" value="Urgent — within 48 hours">
+                  <span class="urgency-box">
+                    <span class="urgency-title">Urgent</span>
+                    <span class="urgency-desc">Within 48 hours</span>
+                  </span>
+                </label>
+                <label class="urgency-opt">
+                  <input type="radio" name="urgency" value="Soon — within two weeks">
+                  <span class="urgency-box">
+                    <span class="urgency-title">Soon</span>
+                    <span class="urgency-desc">Within two weeks</span>
+                  </span>
+                </label>
+                <label class="urgency-opt">
+                  <input type="radio" name="urgency" value="Planning ahead — flexible">
+                  <span class="urgency-box">
+                    <span class="urgency-title">Planning</span>
+                    <span class="urgency-desc">Flexible timing</span>
+                  </span>
+                </label>
+              </div>
+              <p class="err" id="urgency-err" hidden></p>
+            </fieldset>
+
+            <div class="field">
+              <label for="details">Additional details <span class="opt">(optional)</span></label>
+              <textarea id="details" name="details" rows="5"
+                        placeholder="Symptoms, error codes, hours since overhaul, parts already ordered, access constraints, scheduling windows&hellip;"></textarea>
+            </div>
+          </fieldset>
+
+          <div class="field consent-field">
+            <label class="consent">
+              <input type="checkbox" id="consent" name="consent" required aria-describedby="consent-err">
+              <span>I agree that AeroBridge may share the details of this request with maintenance
+              providers in its network in order to arrange introductions. <span class="req" aria-hidden="true">*</span></span>
+            </label>
+            <p class="err" id="consent-err" hidden></p>
+          </div>
+
+          <!-- Simple bot honeypot; real users never see or fill this. -->
+          <div class="hp" aria-hidden="true">
+            <label for="company">Company</label>
+            <input type="text" id="company" name="company" tabindex="-1" autocomplete="off">
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-lg btn-block" id="submitBtn">
+            Send referral request
+          </button>
+
+          <p class="form-foot">
+            AeroBridge coordinates introductions only. Any maintenance agreement, pricing, and
+            airworthiness determination is between you and the provider you select.
+          </p>
+        </form>
+      </div>
     </div>
   </section>
 
@@ -395,189 +585,6 @@
             referrals. Use the form below and note "provider application" in the additional details field.</p>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ REQUEST FORM ============ -->
-  <section class="section section-request" id="request">
-    <div class="wrap wrap-narrow">
-      <header class="section-head reveal">
-        <p class="eyebrow eyebrow-dark">Submit your information</p>
-        <h2>Request maintenance support</h2>
-        <p class="section-lede">
-          Tell us about the aircraft and what it needs. We'll review your request and follow up with
-          matched providers. Fields marked with an asterisk are required.
-        </p>
-      </header>
-
-      <div class="form-shell reveal" data-delay="1">
-
-        <div class="form-status" id="formStatus" role="alert" hidden></div>
-
-        <form id="requestForm" class="form" novalidate>
-
-          <fieldset class="fieldset">
-            <legend class="legend">Your contact information</legend>
-
-            <div class="field-row">
-              <div class="field">
-                <label for="name">Full name <span class="req" aria-hidden="true">*</span></label>
-                <input type="text" id="name" name="name" autocomplete="name" required
-                       aria-describedby="name-err" placeholder="Jordan Ellis">
-                <p class="err" id="name-err" hidden></p>
-              </div>
-
-              <div class="field">
-                <label for="email">Email <span class="req" aria-hidden="true">*</span></label>
-                <input type="email" id="email" name="email" autocomplete="email" required
-                       aria-describedby="email-err" placeholder="you@example.com">
-                <p class="err" id="email-err" hidden></p>
-              </div>
-            </div>
-
-            <div class="field-row">
-              <div class="field">
-                <label for="phone">Phone <span class="req" aria-hidden="true">*</span></label>
-                <input type="tel" id="phone" name="phone" autocomplete="tel" required
-                       aria-describedby="phone-err phone-hint" placeholder="(555) 123-4567">
-                <p class="hint" id="phone-hint">Best number for a provider to reach you.</p>
-                <p class="err" id="phone-err" hidden></p>
-              </div>
-
-              <div class="field">
-                <label for="location">Airport or location <span class="req" aria-hidden="true">*</span></label>
-                <input type="text" id="location" name="location" required
-                       aria-describedby="location-err location-hint" placeholder="KTEB, Teterboro NJ">
-                <p class="hint" id="location-hint">Identifier, city, or where the aircraft sits now.</p>
-                <p class="err" id="location-err" hidden></p>
-              </div>
-            </div>
-          </fieldset>
-
-          <fieldset class="fieldset">
-            <legend class="legend">Aircraft</legend>
-
-            <div class="field-row">
-              <div class="field">
-                <label for="aircraftType">Aircraft type <span class="req" aria-hidden="true">*</span></label>
-                <select id="aircraftType" name="aircraftType" required aria-describedby="aircraftType-err">
-                  <option value="">Select a category&hellip;</option>
-                  <option>Single-engine piston</option>
-                  <option>Multi-engine piston</option>
-                  <option>Turboprop</option>
-                  <option>Light jet</option>
-                  <option>Midsize or large jet</option>
-                  <option>Rotorcraft / helicopter</option>
-                  <option>Experimental / amateur-built</option>
-                  <option>Light sport</option>
-                  <option>Warbird / vintage</option>
-                  <option>Other</option>
-                </select>
-                <p class="err" id="aircraftType-err" hidden></p>
-              </div>
-
-              <div class="field">
-                <label for="tailNumber">Tail number <span class="opt">(optional)</span></label>
-                <input type="text" id="tailNumber" name="tailNumber" placeholder="N123AB"
-                       autocapitalize="characters" spellcheck="false">
-              </div>
-            </div>
-
-            <div class="field">
-              <label for="makeModel">Make and model <span class="opt">(optional)</span></label>
-              <input type="text" id="makeModel" name="makeModel" placeholder="Beechcraft King Air 350">
-            </div>
-          </fieldset>
-
-          <fieldset class="fieldset">
-            <legend class="legend">What you need</legend>
-
-            <div class="field">
-              <label for="maintenanceNeeded">Maintenance needed <span class="req" aria-hidden="true">*</span></label>
-              <select id="maintenanceNeeded" name="maintenanceNeeded" required aria-describedby="maintenanceNeeded-err">
-                <option value="">Select the type of work&hellip;</option>
-                <option>Annual or scheduled inspection</option>
-                <option>100-hour / progressive inspection</option>
-                <option>Unscheduled troubleshooting / squawk</option>
-                <option>Engine or propeller work</option>
-                <option>Avionics install or repair</option>
-                <option>Airframe, sheet metal, or structures</option>
-                <option>Landing gear</option>
-                <option>Pre-buy inspection</option>
-                <option>Paint or interior</option>
-                <option>Parts sourcing</option>
-                <option>Other / not sure</option>
-              </select>
-              <p class="err" id="maintenanceNeeded-err" hidden></p>
-            </div>
-
-            <fieldset class="field urgency-set">
-              <legend class="urgency-legend">Urgency <span class="req" aria-hidden="true">*</span></legend>
-              <div class="urgency" role="radiogroup" aria-describedby="urgency-err">
-                <label class="urgency-opt">
-                  <input type="radio" name="urgency" value="AOG — aircraft on ground" required>
-                  <span class="urgency-box">
-                    <span class="urgency-title">AOG</span>
-                    <span class="urgency-desc">Grounded now</span>
-                  </span>
-                </label>
-                <label class="urgency-opt">
-                  <input type="radio" name="urgency" value="Urgent — within 48 hours">
-                  <span class="urgency-box">
-                    <span class="urgency-title">Urgent</span>
-                    <span class="urgency-desc">Within 48 hours</span>
-                  </span>
-                </label>
-                <label class="urgency-opt">
-                  <input type="radio" name="urgency" value="Soon — within two weeks">
-                  <span class="urgency-box">
-                    <span class="urgency-title">Soon</span>
-                    <span class="urgency-desc">Within two weeks</span>
-                  </span>
-                </label>
-                <label class="urgency-opt">
-                  <input type="radio" name="urgency" value="Planning ahead — flexible">
-                  <span class="urgency-box">
-                    <span class="urgency-title">Planning</span>
-                    <span class="urgency-desc">Flexible timing</span>
-                  </span>
-                </label>
-              </div>
-              <p class="err" id="urgency-err" hidden></p>
-            </fieldset>
-
-            <div class="field">
-              <label for="details">Additional details <span class="opt">(optional)</span></label>
-              <textarea id="details" name="details" rows="5"
-                        placeholder="Symptoms, error codes, hours since overhaul, parts already ordered, access constraints, scheduling windows&hellip;"></textarea>
-            </div>
-          </fieldset>
-
-          <div class="field consent-field">
-            <label class="consent">
-              <input type="checkbox" id="consent" name="consent" required aria-describedby="consent-err">
-              <span>I agree that AeroBridge may share the details of this request with maintenance
-              providers in its network in order to arrange introductions. <span class="req" aria-hidden="true">*</span></span>
-            </label>
-            <p class="err" id="consent-err" hidden></p>
-          </div>
-
-          <!-- Simple bot honeypot; real users never see or fill this. -->
-          <div class="hp" aria-hidden="true">
-            <label for="company">Company</label>
-            <input type="text" id="company" name="company" tabindex="-1" autocomplete="off">
-          </div>
-
-          <button type="submit" class="btn btn-primary btn-lg btn-block" id="submitBtn">
-            Send referral request
-          </button>
-
-          <p class="form-foot">
-            AeroBridge coordinates introductions only. Any maintenance agreement, pricing, and
-            airworthiness determination is between you and the provider you select.
-          </p>
-        </form>
       </div>
     </div>
   </section>

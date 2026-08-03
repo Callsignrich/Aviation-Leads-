@@ -13,7 +13,8 @@ manager, no external requests.
 
 | File | Purpose |
 |------|---------|
-| `index.html` | The entire single-page site: header, hero, services, aircraft types, process, why-us, FAQ, request form, footer. |
+| `index.html` | The entire single-page site: header, hero, **request form**, services, aircraft types, process, why-us, FAQ, footer. The form sits directly below the hero so it is reachable without scrolling far. |
+| `assets/` | Drop-in slot for the hero background photo. See `assets/README.md`. |
 | `styles.css` | All styling: design tokens, layout, components, scroll-reveal animation, responsive breakpoints, reduced-motion and print rules. |
 | `script.js` | Scroll reveal, smooth scrolling, mobile nav, sticky-header state, FAQ accordion, form validation and submission. |
 | `favicon.svg` | Inline-drawn navy/blue mark. No binary assets. |
@@ -97,6 +98,20 @@ Until that constant is set, **no submitted information leaves the browser.**
   follows in-page navigation.
 
 ---
+
+## The hero background
+
+Modelled on an aerial runway photograph: near-black asphalt, a warm low-sun wash
+from the top right, angled slab seams, and an amber dashed centerline. It is built
+from six stacked layers in `.hero-bg` — back to front: `hero-photo`, `hero-scrim`,
+`hero-seams`, `hero-runway`, `hero-sun`, `hero-horizon`. The scrim sits directly
+above the photo rather than on top of everything, so the painted markings stay
+crisp instead of being muddied.
+
+All of it is CSS, so the hero works with no image at all. To use a real photo,
+save it to `assets/hero-runway.jpg` — `.hero-photo` picks it up with no code
+change. Until that file exists the browser logs one harmless 404 for it. See
+`assets/README.md` for sizing and cropping notes.
 
 ## Responsive behaviour
 
