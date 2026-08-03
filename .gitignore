@@ -1,0 +1,16 @@
+# Local backup of unrelated pre-existing files — not part of this project
+_backup/
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# Tooling
+.vercel
+node_modules/
+*.log
+.env
+.env.local
